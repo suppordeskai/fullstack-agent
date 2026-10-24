@@ -57,7 +57,7 @@ Then you're exactly who this was designed around. If you set up a memory vault, 
 
 - **Use your agent:** the wizard leaves three shortcuts on your Desktop, named after your agent. **Chat** opens a typed session, terminal only. **Talk** starts the voice and the face. **Barehands** starts the voice and the hands board (the board is the screen in that mode). Double-click the mood you want; Ctrl-C in the window stops it. (They just run `fullstack-agent/start.sh`, or `start.bat` on Windows, if you ever prefer the terminal.)
 - **Something broken or confusing? Ask your agent to fix it.** Seriously. Open the chat and describe the problem. Every repo here ships a troubleshooting guide written for your agent to read, and your agent is instructed during setup to do the fixing itself. This is the part everyone finds out late: you never have to debug this stack yourself.
-- **Update everything:** `./fullstack-agent/update.sh` on macOS. On Windows, ask your agent: "update everything and tell me what changed." Your files live outside the repos, so updates never touch who your agent is or what it remembers.
+- **Update everything:** `./fullstack-agent/update.sh` on macOS and Linux, `fullstack-agent\update.bat` on Windows (or ask your agent: "update everything and tell me what changed"). Your files live outside the repos, so updates never touch who your agent is or what it remembers.
 - **Daily habit:** open Claude Code in your agent's folder. That's where it lives.
 
 ## The fine print that matters

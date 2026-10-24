@@ -42,7 +42,26 @@ if exist "barehands\" if not "%1"=="voice" (
   start "agent hands" cmd /c "cd barehands && run.bat"
 )
 
+rem Find uv, the tool that installs and runs the voice line. A terminal (or a
+rem Desktop shortcut) started before uv was installed cannot see it on PATH,
+rem so check where its installers put it too. This sits OUTSIDE the block
+rem below on purpose: cmd expands %UV% when it reads a whole ( ) block, so a
+rem value set inside the block would not be seen there.
+set "UV="
+where uv >nul 2>nul && set "UV=uv"
+if not defined UV if exist "%USERPROFILE%\.local\bin\uv.exe" set "UV=%USERPROFILE%\.local\bin\uv.exe"
+if not defined UV if exist "%USERPROFILE%\.cargo\bin\uv.exe" set "UV=%USERPROFILE%\.cargo\bin\uv.exe"
+if not defined UV if exist "%LOCALAPPDATA%\Microsoft\WinGet\Links\uv.exe" set "UV=%LOCALAPPDATA%\Microsoft\WinGet\Links\uv.exe"
+
 if exist "backtalk\" (
+  if not defined UV (
+    echo.
+    echo   The voice line needs a tool called uv, and it is not installed.
+    echo   Open a chat with your agent and say: install uv for the voice.
+    echo.
+    pause
+    exit /b 1
+  )
   echo   voice: starting in this window. Close it to hang up.
   cd backtalk
   rem Self-repair: reconcile the voice line's packages before launch
@@ -54,7 +73,7 @@ if exist "backtalk\" (
   rem that apart from frozen, and people reasonably assumed the worst.
   echo   voice: checking packages. The FIRST run downloads a few hundred MB
   echo          and can take several minutes. It is not stuck.
-  uv sync --inexact
+  "%UV%" sync --inexact
   rem Stop HERE if the packages could not be installed. This used to fall
   rem through to the launch and then blame backtalk's log for a failure
   rem that happened before backtalk ever ran, sending people to a healthy
@@ -70,7 +89,7 @@ if exist "backtalk\" (
     pause
     exit /b 1
   )
-  uv run python -m backtalk.main
+  "%UV%" run python -m backtalk.main
   rem A clean goodbye exits 0 and the window may close. An error exits
   rem nonzero, and the window HOLDS so the message can be read.
   if errorlevel 1 (

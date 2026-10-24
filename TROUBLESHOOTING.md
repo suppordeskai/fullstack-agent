@@ -57,4 +57,4 @@ Everything is wired with paths, so a move breaks the wires. Open Claude Code in 
 
 ## Updates
 
-`./fullstack-agent/update.sh` pulls every piece. Your files (your CLAUDE.md, your vault, your notes) are never inside the repos' tracked files, so updates cannot touch them. If git complains about a config file you edited (backtalk.json, ai-visualizer.json), your edit wins; keep your version.
+`./fullstack-agent/update.sh` (Windows: `fullstack-agent\update.bat`) pulls every piece. Your files (your CLAUDE.md, your vault, your notes) are never inside the repos' tracked files, so updates cannot touch them. If git complains about a config file you edited (backtalk.json, ai-visualizer.json), your edit wins; keep your version.
