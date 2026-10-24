@@ -1,4 +1,4 @@
-@echo off & powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0update.ps1" %* & pause & exit /b
+@echo off & powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0update.ps1" %* && (pause & exit /b 0) || (pause & exit /b 1)
 rem fullstack-agent: updates every installed piece, by handing off to update.ps1.
 rem Copyright (C) 2026 Jared Rhodenizer
 rem SPDX-License-Identifier: AGPL-3.0-or-later
