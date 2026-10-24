@@ -1,46 +1,20 @@
-@echo off
-rem fullstack-agent -- updating has moved. This script does nothing now.
+@echo off & powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0update.ps1" %* & pause & exit /b
+rem fullstack-agent: updates every installed piece, by handing off to update.ps1.
 rem Copyright (C) 2026 Jared Rhodenizer
 rem SPDX-License-Identifier: AGPL-3.0-or-later
 rem
-rem WHY THIS IS EMPTY, because the reason is worth knowing before anyone
-rem puts it back.
+rem WHY EVERYTHING IS ON THE FIRST LINE, because the reason is worth knowing
+rem before anyone rearranges it.
 rem
-rem To update safely this script used to copy ITSELF into a folder under
-rem LOCALAPPDATA and hand control to the copy. That was real protection
-rem against a real bug: cmd reads a .bat by byte offset, so a script that
-rem pulls a new version of itself mid-run gets garbled from that point on.
+rem cmd reads a .bat by byte offset, going back to the file on disk after each
+rem command. The update can pull a new version of this very file, so any line
+rem cmd has not read yet may be garbage by the time it gets there. A single
+rem line is read in full before any of it runs, and its `exit /b` ends the
+rem script before cmd ever looks at the disk again.
 rem
-rem It is also, precisely, what malicious software does -- write a copy of
-rem yourself somewhere out of sight and run it. Antivirus scores the
-rem behaviour and cannot see the intention, and Windows users were being
-rem warned about this file. The protection was never worth that price
-rem either: it only mattered on an update that changed this very script,
-rem and by then the pull had already succeeded. The cost was a warning on
-rem every machine; the benefit was a tidier error message on a rare day.
+rem An earlier version guarded against this by copying itself into a folder
+rem under LOCALAPPDATA and running the copy. That is exactly what malicious
+rem software does, and antivirus warned people about it. Never bring it back.
 rem
-rem The file is kept rather than deleted so an existing Desktop shortcut
-rem still finds something here and prints the message below, instead of
-rem failing with an error nobody can read.
-rem
-rem Nothing on macOS or Linux changed. update.sh wraps its work in a shell
-rem function and calls it at the very end, so bash reads the whole script
-rem into memory before running any of it. It never needed a copy of itself.
-rem
-rem If this folder has no .git yet because it arrived as a zip, an agent
-rem can wire it up once, keeping your config files:
-rem   git init -b main
-rem   git remote add origin https://github.com/jaredrhod/fullstack-agent
-rem   git fetch origin
-rem   git reset --hard origin/main
-
-echo.
-echo   Updating has moved, and there is nothing here to run.
-echo.
-echo   Open a chat with your agent and say:
-echo.
-echo       update everything and tell me what changed
-echo.
-echo   It does the same job, and it tells you what arrived.
-echo.
-pause
+rem The real work lives in update.ps1. PowerShell parses a whole script before
+rem running it, so that file can safely update itself.
